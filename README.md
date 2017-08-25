@@ -15,7 +15,7 @@ Windows frontend for chdkptp with two cameras.
 Shoots two cameras at (almost) the same time and quickly.  
 Saves each photo directly to the PC.  
 Very quick (thanks to the chdkptp rsint command).  
-Trigger cameras with a GUI button, keyboard shortcut or mouse wheel.
+Trigger cameras with a GUI button, keyboard shortcut or mouse wheel.  
 Autonames files in sequence 0001L.jpg 0001R.jpg 0002L.jpg ...  
 
 ## Controls - Basic Workflow
