@@ -9,6 +9,8 @@ Windows frontend for chdkptp with two cameras.
 
 ![Alt text](images/TwoCamControl1.PNG?raw=true)
 
+![Alt text](images/TwoCamControl2.PNG?raw=true)
+
 ## Features
 Shoots two cameras at (almost) the same time and quickly.  
 Saves each photo directly to the PC.  
