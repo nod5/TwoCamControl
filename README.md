@@ -4,6 +4,9 @@ TwoCamControl.ahk -- version 2017-08-25 -- by Nod5 -- GPLv3
 
 Windows frontend for chdkptp with two cameras.
 
+[Download TwoCamControl binary](https://github.com/nod5/TwoCamControl/releases)
+
+
 ![Alt text](images/TwoCamControl1.PNG?raw=true)
 
 ## Features
