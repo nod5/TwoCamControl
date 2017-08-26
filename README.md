@@ -58,16 +58,16 @@ To reset to default values delete TwoCamControl.ini and restart the program.
 - Mouse wheel down: Shoot photo. Useful with a wireless mouse.
 - Space button: Shoot photo.
 - Numpad keys: useful with wireless numpad
- 4 = connect cameras
- 5 = zoom
- 6 = focus lock
- 7 = new project
- 8 = shoot photo
- 9 = pause
- hold 1 + 5 = zoom only left side camera
- hold 2 + 6 = focus only right side camera
- hold 0 + 5/6 = zoom out/focus unlock
- hold 0 & 1 + 5 = zoom out left side camera
+  - 4 = connect cameras
+  - 5 = zoom
+  - 6 = focus lock
+  - 7 = new project
+  - 8 = shoot photo
+  - 9 = pause
+  - hold 1 + 5 = zoom only left side camera
+  - hold 2 + 6 = focus only right side camera
+  - hold 0 + 5/6 = zoom out/focus unlock
+  - hold 0 & 1 + 5 = zoom out left side camera
 - Right click on Preview: show the same preview again.
 - Right click on Project: cancel current project but keep cameras on.
 - Click on green text for a single session change of that setting.
@@ -79,14 +79,14 @@ GitHub , https://github.com/nod5/TwoCamControl
 DIY Book Scanner forum , https://forum.diybookscanner.org/viewtopic.php?f=20&t=3082
 
 ## Troubleshooting
-Q  What if camera serial setup step fails?  
-A  Set camera serial manually: plug in and power on camera, open a cmd window in the chdkptp.exe folder, run the command "chdkptp.exe -elist" and look for the serial. It looks something like this: DC3E13D4111234B2A23CC31F2E3AA5 . TwoCamControl uses the serial to identify which camera is which.
+**Q**  What if camera serial setup step fails?  
+**A**  Set camera serial manually: plug in and power on camera, open a cmd window in the chdkptp.exe folder, run the command "chdkptp.exe -elist" and look for the serial. It looks something like this: DC3E13D4111234B2A23CC31F2E3AA5 . TwoCamControl uses the serial to identify which camera is which.
 
-Q  How to solve "ERROR: not in continous mode"?  
-A  Power on the camera with CHDK on the SD card without connecting it to the PC, press "func" button on the camera, go to the menu item that allows setting continuous mode and turn it on. Power off the camera and try TwoCamControl again.
+**Q**  How to solve "ERROR: not in continous mode"?  
+**A**  Power on the camera with CHDK on the SD card without connecting it to the PC, press "func" button on the camera, go to the menu item that allows setting continuous mode and turn it on. Power off the camera and try TwoCamControl again.
 
-Q  What if Chkdptp cmd win shows error about filepath?  
-A  Try changing workdirectory path to not include special or non-english characters. Test with only a-z 0-9 space.
+**Q**  What if chkdptp cmd window shows error about filepath?  
+**A**  Try changing workdirectory path to not include special or non-english characters. Test with only a-z 0-9 space.
 
-Q  Can I use TwoCamControl with only one camera?  
-A  Yes. Two cmd windows will still show, one with error messages, but the single camera will shoot and download photos successfully.
+**Q**  Can I use TwoCamControl with only one camera?  
+**A**  Yes. Two cmd windows will still show, one with error messages, but the single camera will shoot and download photos successfully.
