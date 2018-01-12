@@ -1,4 +1,4 @@
-﻿#SingleInstance force
+#SingleInstance force
 SetTitleMatchMode, 2 ;string anywhere
 SetKeyDelay, -1
 SetBatchLines, -1
@@ -12,7 +12,7 @@ TwoCamControl
 Windows frontend for chdkptp with two cameras.
 
 **********************
-version 2017-08-25
+version 2018-01-12
 by Nod5 -- github.com/nod5/TwoCamControl
 Free Software -- GPL3
 Tested in Win10 x64
@@ -318,8 +318,8 @@ FileDelete, %workdir%\TCC_temppreviewL.jpg
 FileDelete, %workdir%\TCC_temppreviewR.jpg
 tempoptions := RegExReplace(rsintoptions,  "-cmdwait=\d+", "")
 ;enclose path for rs
-acti(leftcam),  xs("rs '" workdir "/TCC_temppreviewL' " tempoptions "{enter}",leftcam), sleep(200)
-acti(rightcam), xs("rs '" workdir "/TCC_temppreviewR' " tempoptions "{enter}",rightcam), actiscript()
+acti(leftcam),  xs("rs '" workdir "/TCC_temppreviewL' " tempoptions,leftcam), sleep(200)
+acti(rightcam), xs("rs '" workdir "/TCC_temppreviewR' " tempoptions,rightcam), actiscript()
 
 ShowPreviewAgain:
 Loop ;wait for one pic saved
@@ -367,9 +367,9 @@ Loop, Parse, h,`,
 
 GuiClose: 
 if proj && !nopcsave ;if proj has started  ;exit rsint mode
- acti(leftcam), xs("q{enter}",leftcam), acti(rightcam), xs("q{enter}",rightcam), sleep(2000)
+ acti(leftcam), xs("q",leftcam), acti(rightcam), xs("q",rightcam), sleep(2000)
 if (pid1 or pid2) ;if cameras connected  ;shut down cameras
- acti(leftcam), xs("luar shut_down(){enter}",leftcam), acti(rightcam), xs("luar shut_down(){enter}",rightcam), sleep(2000)
+ acti(leftcam), xs("luar shut_down()",leftcam), acti(rightcam), xs("luar shut_down()",rightcam), sleep(2000)
 Process, Close, chdkptp.exe
 sleep 200
 Process, Close, chdkptp.exe
@@ -402,7 +402,7 @@ return
 
 CancelProject: ;exit rsint, clear vars, unlock focus, ready cameras
 if proj ;exit rsint
-acti(leftcam), xs("q{enter}",leftcam), acti(rightcam), xs("q{enter}",rightcam), sleep(1000)
+acti(leftcam), xs("q",leftcam), acti(rightcam), xs("q",rightcam), sleep(1000)
 enum := 0000, count := 1, proj := "" ;reset count
 gosub #F6  ;R L focus lock off
 ;keep other vars, since (F7) New project will set them
@@ -438,13 +438,13 @@ reload
 }
 
 xs(x,y) {  ;send command x string to camera y's cmd window
-x := ansify(x)
+x := unicodify(x)
 If WinActive("d=" y " ahk_exe cmd.exe")
- SendInput,%x%
+ SendInput,%x%{enter}
 }
 
 xsif(x,y) {  ;send command x string to camera y's cmd window
-x := ansify(x)
+x := unicodify(x)
 If !WinActive("d=" y " ahk_exe cmd.exe")
  return
 ;wait for control/shift modifier key release
@@ -454,22 +454,23 @@ if GetKeyState("Control")
  KeyWait, Control
 if GetKeyState("Shift")
  KeyWait, Shift
-SendInput,%x%
+SendInput,%x%{enter}
 }
 
-ansify(x) {
-;workaround for sendinput char error in interactive CLI with win10 non-eng
-;see https://autohotkey.com/docs/commands/Asc.htm for numbers
-;todo: check if more chars need to be added
-x := StrReplace(x, " ", "{ASC 0032}")
-x := StrReplace(x, "'", "{ASC 0039}") 
-x := StrReplace(x, "(", "{ASC 0040}") 
-x := StrReplace(x, ")", "{ASC 0041}") 
-x := StrReplace(x, "/", "{ASC 0047}") 
-x := StrReplace(x, "\", "{ASC 0092}") 
-x := StrReplace(x, "=", "{ASC 0061}")
-x := StrReplace(x, ":", "{ASC 0058}")
-return x
+unicodify(x) {
+;workaround for sendinput char error in chdkptp interactive CLI with win10 non-eng
+;note: in unicode scripts asc() returns unicode value
+;note: Setformat can make asc() output hex, for SendInput {U+nnnn} use.
+;old TwoCamControl ansify() flaw: sent ascii {ASC nnnn} and only for some chars
+; https://autohotkey.com/docs/commands/Asc.htm
+; https://autohotkey.com/docs/commands/SetFormat.htm
+; https://autohotkey.com/docs/commands/Send.htm
+;note: special key {enter} fail if passed through unicodify() so send it as is
+SetFormat, IntegerFast, Hex
+Loop, Parse, x
+ uni .= "{U+" Asc(A_LoopField) "}"
+SetFormat, IntegerFast, Decimal
+return uni
 }
 
 ;link cameras to left/right side based on right camera serial number
@@ -545,9 +546,9 @@ loop, %zoomsteps%
 {
 sleep(500)
 if !right_only and !Lcon
- acti(leftcam),  xsif("luar click('zoom_in'){enter}",leftcam),  zoomleft += z(in_out)
+ acti(leftcam),  xsif("luar click('zoom_in')",leftcam),  zoomleft += z(in_out)
 if !left_only and !Rcon
- acti(rightcam), xsif("luar click('zoom_in'){enter}",rightcam), zoomright += z(in_out)
+ acti(rightcam), xsif("luar click('zoom_in')",rightcam), zoomright += z(in_out)
 }
 Lcon .= !right_only ? 1 :  ;connect cam only once, to avoid chdkptp error
 Rcon .= !left_only  ? 1 :
@@ -593,10 +594,8 @@ in_out := InStr(A_ThisLabel,"#") ? "zoom_out" : "zoom_in"
 sleep(1000)
 if !right_only
  zoom("left", in_out)
- ;acti(leftcam),  xsif("luar click('" in_out "'){enter}",leftcam),  zoomleft += z(in_out)
 if !left_only
  zoom("right", in_out)
- ;acti(rightcam), xsif("luar click('" in_out "'){enter}",rightcam), zoomright += z(in_out)
 actiscript()
 return
 
@@ -609,17 +608,15 @@ dif_left := sz1 - zoomleft
 in_out := dif_left > 0 ? "zoom_in" : "zoom_out"
 loop, % Abs(dif_left)  ;absolute value, since dif_left can be negative
  sleep(500),  zoom("left", in_out)
- ;acti(leftcam),  xsif("luar click('" in_out "'){enter}",leftcam),  zoomleft += z(in_out)
 dif_right := sz2 - zoomright
 in_out := dif_right > 0 ? "zoom_in" : "zoom_out"
 loop, % Abs(dif_right)
  sleep(500), zoom("right", in_out)
- ;acti(rightcam), xsif("luar click('" in_out "'){enter}",rightcam), zoomright += z(in_out)
 actiscript()
 return
 
 zoom(which, in_out){
-acti(%which%cam), xsif("luar click('" in_out "'){enter}",%which%cam), zoom%which% += z(in_out)
+acti(%which%cam), xsif("luar click('" in_out "')",%which%cam), zoom%which% += z(in_out)
 }
 
 ;FOCUS LOCK 
@@ -651,9 +648,9 @@ right_only := SubStr(A_ThisLabel,1,1) == "+" ? 1 : 0 ;shift   = only right cam
 afmode := InStr(A_ThisLabel, "#") ? 0 : 1   ;0 unlock , 1 lock
 sleep(1000)
 if !right_only
- acti(leftcam),  xsif("luar set_aflock(" afmode "){enter}",leftcam)
+ acti(leftcam),  xsif("luar set_aflock(" afmode ")",leftcam)
 if !left_only
- acti(rightcam), xsif("luar set_aflock(" afmode "){enter}",rightcam)
+ acti(rightcam), xsif("luar set_aflock(" afmode ")",rightcam)
 actiscript()
 return
 
@@ -669,8 +666,8 @@ msg_and_reload("Error: could not create %workdir%\%proj%\ .")
 FileDelete, %workdir%\TCC_temppreview*.jpg ;clean temp preview images
 
 if !nopcsave  ;apply rsintoptions
-   acti(leftcam),  xsif("rsint " rsintoptions "{enter}",leftcam), sleep(200)
- , acti(rightcam), xsif("rsint " rsintoptions "{enter}",rightcam), actiscript()
+   acti(leftcam),  xsif("rsint " rsintoptions,leftcam), sleep(200)
+ , acti(rightcam), xsif("rsint " rsintoptions,rightcam), actiscript()
 
 counttext := enum > 8000 ? 0000+count : enum+1000+count
 GuiControl,, fileenum,filename count %counttext% 
@@ -692,7 +689,6 @@ IniWrite, %zoomleft%|%zoomright%, %ini%, options, savedzoom
 ;run extra process at project start with project name timestamp (YYYYMMDDhhmmss) param
 if ( proc==1 and FileExist(extraprocess) )
  Run, "%extraprocess%" %proj%
-
 return
 
 
@@ -748,11 +744,11 @@ xc := SubStr("000000000000" . count+enum, -3) ;pad 1 to 0001
 Gui, Color, silver
 sleep(wait)
 if !nopcsave  ;do *not* enclose path in rsint mode
-   acti(leftcam),  xs("path " workdirfrontslash "/" proj "/" xc "R{enter}s{enter}",leftcam)
- , acti(rightcam), xs("path " workdirfrontslash "/" proj "/" xc "L{enter}s{enter}",rightcam)
+   acti(leftcam),  xs("path " workdirfrontslash "/" proj "/" xc "R",leftcam),  xs("s", leftcam)
+ , acti(rightcam), xs("path " workdirfrontslash "/" proj "/" xc "L",rightcam), xs("s", rightcam)
 if nopcsave
-   acti(leftcam),  xs("shoot " rsintoptions "{enter}",leftcam)
- , acti(rightcam), xs("shoot " rsintoptions "{enter}",rightcam)
+   acti(leftcam),  xs("shoot " rsintoptions,leftcam)
+ , acti(rightcam), xs("shoot " rsintoptions,rightcam)
 pau := 0
 Gui, Color, D3E3D3
 count++
