@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [2018-01-12] - 2018-01-12
+### Changed
+- fix character errors in chdkptp cmd window ( issue #1 )
 
 ## [2017-08-25] - 2017-08-25
 ### Added
