@@ -1,6 +1,6 @@
 # TwoCamControl
 
-TwoCamControl.ahk -- version 2017-08-25 -- by Nod5 -- GPLv3
+TwoCamControl.ahk -- version 2018-01-12 -- by Nod5 -- GPLv3
 
 Windows frontend for chdkptp with two cameras.
 
@@ -30,13 +30,13 @@ http://chdk.wikia.com/wiki/CHDK_in_Brief
 http://chdk.wikia.com/wiki/Downloads  
 2. The cameras must have filewrite support  
 http://chdk.wikia.com/wiki/CameraFeatureTable , see FWT column  
-3. Libusb drivers installed for both cameras on PC
+3. Libusb drivers installed for both cameras on PC  
 http://chdk.wikia.com/wiki/PTP_Extension#LibUSB_Driver_for_Windows  
 4. chdkptp downloaded and unzipped  
 https://www.assembla.com/spaces/chdkptp/wiki  
 5. Only if you wish to run/build TwoCamControl from source: install Autohotkey,  https://autohotkey.com/  
 
-## Required Setup
+## Required Setup in TwoCamControl
 - set workdirectory path
 - set chdkptp path
 - set right camera serial
@@ -85,8 +85,12 @@ DIY Book Scanner forum , https://forum.diybookscanner.org/viewtopic.php?f=20&t=3
 **Q**  How to solve "ERROR: not in continous mode"?  
 **A**  Power on the camera with CHDK on the SD card without connecting it to the PC, press "func" button on the camera, go to the menu item that allows setting continuous mode and turn it on. Power off the camera and try TwoCamControl again.
 
-**Q**  What if chkdptp cmd window shows error about filepath?  
+**Q**  What if chkdptp cmd window shows error about filepath or incorrect characters?  
 **A**  Try changing workdirectory path to not include special or non-english characters. Test with only a-z 0-9 space.
+
+**Q**  What if chkdptp cmd window *still* shows error about filepath or incorrect characters?  
+**A**  See https://github.com/nod5/TwoCamControl/issues/1
 
 **Q**  Can I use TwoCamControl with only one camera?  
 **A**  Yes. Two cmd windows will still show, one with error messages, but the single camera will shoot and download photos successfully.
+
