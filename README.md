@@ -76,7 +76,6 @@ To reset to default values delete TwoCamControl.ini and restart the program.
 
 ## Feedback
 GitHub , https://github.com/nod5/TwoCamControl  
-DIY Book Scanner forum , https://forum.diybookscanner.org/viewtopic.php?f=20&t=3082
 
 ## Troubleshooting
 **Q**  What if camera serial setup step fails?  
