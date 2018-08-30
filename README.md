@@ -108,8 +108,8 @@ DIY Book Scanner forum , https://forum.diybookscanner.org/viewtopic.php?f=20&t=3
 **Q**  Can I use TwoCamControl with only one camera?  
 **A**  Yes.  
 
-**Q**  What Windows version does TwoCamControl require?
-**A**  TwoCamControl is only tested in Windows 10 x64. It might work in earlier Windows.
+**Q**  What Windows version does TwoCamControl require?  
+**A**  TwoCamControl is only tested in Windows 10 x64. It might work in earlier Windows.  
 
 **Q**  What if my question/issue/suggestion is not in this FAQ?  
 **A**  Open an issue at GitHub and describe the problem. Include these details: Your camera model, the version of CHDK, chdkptp and TwoCamControl, and Windows version and language.  
