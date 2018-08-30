@@ -23,7 +23,7 @@ Autonames files in sequence `0001L.jpg` `0001R.jpg` `0002L.jpg` ...
 3. When the settings are good start a `New Project` and `Shoot`.  
 
 ## Dependencies
-1. Two Canon cameras with **CHDK** installed. Use the latest development version of CHDK.
+1. Two Canon cameras with **CHDK** installed. Use the latest development version of CHDK.  
 http://chdk.wikia.com/wiki/CHDK_in_Brief  
 http://chdk.wikia.com/wiki/Downloads  
 2. The cameras must have filewrite support. See FWT column here:  
