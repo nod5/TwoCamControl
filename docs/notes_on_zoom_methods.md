@@ -25,7 +25,7 @@ An option let users switch to the click('zoom_in') method.
 Stick to the default zoom, unless you notice the jpg distortion problem  with your specific camera. In that case use the non-default click('zoom_in') method.
 
 **Request for help from users**  
-If you do notice the jpg distortion problem with your camera then you can help out by posting about it in a new TwoCamControl github issue and/or in this CHDK forum thread. Describe the camera model and CHDK/chdkptp versions you use. The CHDK developers might then be able to to fix the problem for that camera.
+If you do notice the jpg distortion problem with your camera then you can help out by posting about it in a new TwoCamControl [github issue](https://github.com/nod5/TwoCamControl/issues) and/or in [this CHDK forum thread](https://chdk.setepontos.com/index.php?topic=13540.msg). Describe the camera model and CHDK/chdkptp versions you use. The CHDK developers might then be able to to fix the problem for that camera.
 
 **Further reading**
 - [CHDK forum thread](https://chdk.setepontos.com/index.php?topic=13540.msg) about zoom_set and the distortion problem, with links to additional threads.
