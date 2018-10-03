@@ -1,6 +1,6 @@
 # TwoCamControl
 
-TwoCamControl.ahk  -  version 2018-08-30  -  by Nod5  -  GPLv3
+TwoCamControl.ahk  -  version 2018-10-03  -  by Nod5  -  GPLv3
 
 Windows frontend for chdkptp with two cameras.
 
@@ -23,7 +23,7 @@ Autonames files in sequence `0001L.jpg` `0001R.jpg` `0002L.jpg` ...
 3. When the settings are good start a `New Project` and `Shoot`.  
 
 ## Dependencies
-1. Two Canon cameras with **CHDK** installed. Use the latest development version of CHDK.  
+1. Two Canon cameras with **CHDK** installed. Use the latest development version of CHDK.
 http://chdk.wikia.com/wiki/CHDK_in_Brief  
 http://chdk.wikia.com/wiki/Downloads  
 2. The cameras must have filewrite support. See FWT column here:  
@@ -46,7 +46,8 @@ Install AutoHotkey https://autohotkey.com and save the .ahk with UTF-8 BOM encod
 - **Mousewheel (off)** Mouse wheel down triggers a shoot.  
 - **Numpad keys (off)** Activate numpad key controls (see below).  
 - **Space (off)** Space button triggers a shoot.  
-- **No PC Save (off)** Saves shots to camera SD cards (not to PC). Uses chdkptp `shoot` command with parameters set by user in the rsint options field. Try parameter raw=1 for raw shoot.  
+- **PC Save (on)** Save images directly to PC. Uncheck to save to camera SD cards (not to PC). Save to SD mode uses chdkptp "shoot" command with parameters set by user in the rsint options field. Try parameter raw=1 for raw shoot.  
+- **Alt Zoom (off)** Use click('zoom_in') method instead of the default set_zoom method. If this is checked then the numbers in the auto zoom settings are interpreted as the number of click zoom actions to auto perform on connect.
 - **rsint options (-cmdwait=600 -tv=1/160)** parameters for the `rsint` command. See file `USAGE.TXT` in chdkptp for more. `cmdwait` is the number of seconds until rsint times out.  
 - **extraprocess ()** Path to some external tool to run at project start. Example: `C:\folder\program.exe` . TwoCamControl sends the project name as a command line parameter. The project name is a timestamp (YYYYMMDDhhmmss).  
 
@@ -103,13 +104,16 @@ DIY Book Scanner forum , https://forum.diybookscanner.org/viewtopic.php?f=20&t=3
 **A**  Try changing workdirectory path to not include special or non-english characters. Test with only a-z 0-9 space.  
 
 **Q**  What if chkdptp cmd window *still* shows error about filepath or incorrect characters?  
-**A**  See GitHub issue #1  
+**A**  See GitHub [issue #1](https://github.com/nod5/TwoCamControl/issues/1)
 
 **Q**  Can I use TwoCamControl with only one camera?  
 **A**  Yes.  
 
 **Q**  What Windows version does TwoCamControl require?  
 **A**  TwoCamControl is only tested in Windows 10 x64. It might work in earlier Windows.  
+
+**Q**  How does zoom work in TwoCamControl?  
+**A**  In default mode there are two zoom actions. You can zoom in/out a big amount (5% of the camera's zoom range) or a minimal amount (2 steps if the camera has a 60+ zoom range, otherwise 1 step). This is done using the chdkptp commands zoom_set and zoom_set_rel. The non-default "Alt Zoom" mode can be enabled in Setup. There TwoCamControl uses the chdkptp command click('zoom_in'). Use the non-default mode if the default causes distortion in the .jpg files where lines become curved similar to a fish lens effect. Only some cameras have that problem. Read  [notes_on_zoom_methods.md](https://github.com/nod5/TwoCamControl/tree/master/docs/notes_on_zoom_methods.md) for more.
 
 **Q**  What if my question/issue/suggestion is not in this FAQ?  
 **A**  Open an issue at GitHub and describe the problem. Include these details: Your camera model, the version of CHDK, chdkptp and TwoCamControl, and Windows version and language.  
