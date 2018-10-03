@@ -1,4 +1,4 @@
-#SingleInstance force
+﻿#SingleInstance force
 SetTitleMatchMode, 2 ;string anywhere
 SetKeyDelay, -1
 SetBatchLines, -1
@@ -12,7 +12,7 @@ TwoCamControl
 Windows frontend for chdkptp with two cameras.
 
 **********************
-version 2018-08-30
+version 2018-10-03
 by Nod5
 https://www.github.com/nod5/TwoCamControl
 Free Software GPLv3
@@ -49,11 +49,12 @@ REQUIRED SETUP IN TWOCAMCONTROL
 
 OPTIONAL SETTINGS (DEFAULT VALUE)  
 - Auto zoom (0): Auto zoom this number of steps when right/left camera connects.  
-- Wait (400): Wait this number of miliseconds before the camera shoots. Use this to add a delay in a hardware setup where shoots are triggered by a mousewheel that the platen touches on its way down. Set to 0 for no delay.  
+- Wait (0): Wait this number of miliseconds before the camera shoots. Use this to add a delay in a hardware setup where shoots are triggered by a mousewheel that the platen touches on its way down. Set to 0 for no delay.  
 - Mousewheel (off): Mouse wheel down triggers a shoot.  
 - Numpad keys (off): Activate numpad key controls (see below).  
 - Space (off): Space button triggers a shoot.  
-- No PC Save (off): Saves shots to camera SD cards (not to PC). Uses chdkptp "shoot" command with parameters set by user in the rsint options field. Try parameter raw=1 for raw shoot.  
+- PC Save (on): Save images directly to PC. Uncheck to save to camera SD cards (not to PC). Save to SD mode uses chdkptp "shoot" command with parameters set by user in the rsint options field. Try parameter raw=1 for raw shoot.  
+- Alt Zoom (off): Use click('zoom_in') method instead of the default set_zoom method. If this is checked then the numbers in the auto zoom settings are interpreted as the number of click zoom actions to auto perform on connect.
 - rsint options (-cmdwait=600 -tv=1/160): parameters for the rsint command. See file USAGE.TXT in chdkptp for details. Cmdwait is the number of seconds until rsint times out.  
 - extraprocess (blank): Path to some external tool to run at project start. Example: C:\folder\program.exe . TwoCamControl sends the project name as a command line parameter. The project name is a timestamp (YYYYMMDDhhmmss).  
 
@@ -118,14 +119,25 @@ A  Yes.
 Q  What Windows version does TwoCamControl require?  
 A  TwoCamControl is only tested in Windows 10 x64. It might work in earlier Windows.  
 
+Q  How does zoom work in TwoCamControl?  
+A  In default mode there are two zoom actions. You can zoom in/out a big amount (5 percent of the camera's zoom range) or a minimal amount (2 steps if the camera has a 60+ zoom range, otherwise 1 step). This is done using the chdkptp commands zoom_set and zoom_set_rel. The non-default "Alt Zoom" mode can be enabled in Setup. There TwoCamControl uses the chdkptp command click('zoom_in'). Use the non-default mode if the default causes distortion in the .jpg files where lines become curved similar to a fish lens effect. Only some cameras have that problem. Read notes_on_zoom_methods.md on GitHub for more.  
+
 Q  What if my question/issue/suggestion is not in this FAQ?  
 A  Open an issue at GitHub and describe the problem. Include these details: Your camera model, the version of CHDK, chdkptp and TwoCamControl and Windows version and language.  
 )
 
 FileEncoding, UTF-16
-;set UTF-16 before each iniwrite/iniread instance
-;to enable .ini strings to have special unicode characters in projects work directory
-;TODO: unfixed problem that chdkptp rsint shoot still garbles any special unicode characters in work directory path when saving the .jpg to PC
+;Set UTF-16 before each iniwrite/iniread instance
+;to enable special characters (non ASCII) in .ini variables
+;for work directory path, chdkptp path, extraprocess path
+;
+;However chdkptp only supports ASCII characters in the rsint command path
+;For we require ASCII in the work directory edit field, until chdkptp adds unicode support
+;Background
+;https://chdk.setepontos.com/index.php?topic=6231.msg138156#msg138156
+;https://en.wikipedia.org/wiki/ASCII
+
+
 checkini()
 FileEncoding, UTF-8
 ;reset to UTF-8 immediately afterwards, otherwise other .txt file I/O get garbled text
@@ -146,18 +158,19 @@ rightcamserial=
 auto_zoom_right=
 auto_zoom_left=
 previous_zooms=
-wait=400
+wait=0
 mousewheelshoot=0
 numpadkeys=0
 spaceshoot=0
-nopcsave=0
+pcsave=1
+alt_zoom_method=0
 rsintoptions=-cmdwait=600 -tv=1/160
 extraprocess=
 )
 FileAppend, %ini_txt%, %ini%  ;create default ini
 }
 
-setup_items = workdir,chdkptp,setup_button,rightcamserial,auto_zoom_right,auto_zoom_left,previous_zooms,wait,mousewheelshoot,numpadkeys,spaceshoot,nopcsave,rsintoptions,extraprocess
+setup_items = workdir,chdkptp,setup_button,rightcamserial,auto_zoom_right,auto_zoom_left,previous_zooms,wait,mousewheelshoot,numpadkeys,spaceshoot,pcsave,alt_zoom_method,rsintoptions,extraprocess
 
 FileEncoding, UTF-16
 Loop, Parse, setup_items,`,
@@ -170,8 +183,10 @@ if !numpadkeys
   numpadkeys = 0
 if !spaceshoot
   spaceshoot = 0
-if !nopcsave
-  nopcsave = 0
+if !pcsave
+  pcsave = 1
+if !alt_zoom_method
+  alt_zoom_method = 0
 if extraprocess
   proc = 1
 screenstate = 1
@@ -297,11 +312,18 @@ Gui, Add, text,x44 yp+25,Space
 Gui, font, s10 normal
 Gui, Add, Checkbox, yp x+7 w17 h20 Checked%spaceshoot% vspaceshoot gspaceshoot
 
-;nopcsave
+;pcsave
 Gui, font, s10 bold
-Gui, Add, text,xp+27 yp,No PC Save
+Gui, Add, text,xp+25 yp,PC Save
 Gui, font, s10 normal
-Gui, Add, Checkbox, yp x+7 w17 h20 Checked%nopcsave% vnopcsave gnopcsave
+Gui, Add, Checkbox, yp x+7 w15 h20 Checked%pcsave% vpcsave gpcsave
+
+;alternative zoom method
+Gui, font, s10 bold
+Gui, Add, text,xp+27 yp,Alt Zoom
+Gui, font, s10 normal
+Gui, Add, Checkbox, yp x+7 w17 h20 Checked%alt_zoom_method% valt_zoom_method galt_zoom_method
+
 
 ;rsintoptions = -cmdwait=600 -tv=1/160
 Gui, font, s10 bold
@@ -329,6 +351,7 @@ SetTimer, modifier_key_check, 50
 return
 
 ;save to ini on editbox/checkbox change
+alt_zoom_method:
 workdir:
 chdkptp:
 rightcamserial:
@@ -339,7 +362,7 @@ mousewheelshoot:
 rsintoptions:
 numpadkeys:
 spaceshoot:
-nopcsave:
+pcsave:
 extraprocess:
 gui,submit,nohide
 tempkey := a_thislabel      ;wait
@@ -355,10 +378,34 @@ if (a_thislabel = "workdir")
 {
   ;trim end slash
   workdir := SubStr(workdir,0) = "\" ? SubStr(workdir,1,StrLen(workdir)-1) : workdir
+
+  ;path must be ascii, otherwise chdkptp will save to incorrect folder
+  if !isAscii(workdir)
+  {
+    ascii_error = `n Error:`nThe work directory path must be ASCII characters.`nTry a path with only A-Z 0-9 Space \ `n `n
+    ToolTip, % ascii_error, % A_CaretX, % A_CaretY
+
+    ;clear ini value
+    FileEncoding, UTF-16
+    IniWrite, %A_Space% , %ini%, options, %tempkey%
+    FileEncoding, UTF-8
+    
+    sleep 2500
+    ToolTip
+    GuiControl,, workdir,
+  }
+
   ;chdkptp uses frontslashes
   workdirfrontslash := StrReplace(workdir, "\","/")
 }
 return
+
+
+;function: check if string is ASCII
+;https://en.wikipedia.org/wiki/ASCII
+isAscii(string){
+return RegExMatch(string, "[^[:ascii:]]") = 0 ? 1 : 0
+}
 
 
 ;use chdkptp to read connected camera serial number
@@ -458,7 +505,7 @@ hotonglobal(h) {
 
 GuiClose: 
 ;if proj has started: exit rsint mode
-if proj && !nopcsave
+if proj && pcsave
 {
   if acti(leftcam)
     xs("q",leftcam)
@@ -692,7 +739,7 @@ if rightcam and !left_only and !right_connected
   pid2 := connect_cam(chdkptp, rightcam, gui_width, 367)
 sleep(500)
 
-;get zoom step range for each camera
+;get zoom step range for each camera, returns blank if fail
 if !right_only and !left_connected
   if acti(leftcam)
     left_zoom_range   := get_zoom("left", "return get_zoom_steps()") , sleep(500)
@@ -702,6 +749,7 @@ if !left_only and !right_connected
     right_zoom_range  := get_zoom("right", "return get_zoom_steps()")
 
 ;calculate 5% zoom in steps for each camera, at minimum 1 step
+;examples: 128 range camera -> 6 steps , 9 range camera -> 1 step
 zp := 0.05
 right_percentage_steps  := return_largest( round(right_zoom_range  * zp) , 1)
 left_percentage_steps   := return_largest( round(left_zoom_range   * zp) , 1)
@@ -710,12 +758,23 @@ left_percentage_steps   := return_largest( round(left_zoom_range   * zp) , 1)
 if (auto_zoom_left > 0)
   if !right_only and !left_connected
     if acti(leftcam)
-      zoom_set("left", auto_zoom_left)
+      if !alt_zoom_method
+        zoom_set("left", auto_zoom_left)
+      else
+        ;use alternative zoom click method
+        Loop, % auto_zoom_left
+          zoom_click("left", "zoom_in"), sleep(300)
 
 if (auto_zoom_right > 0)
   if !left_only and !right_connected
     if acti(rightcam)
-      zoom_set("right", auto_zoom_right)
+      if !alt_zoom_method
+        zoom_set("right", auto_zoom_right)
+      else
+        ;use alternative zoom click method
+        Loop, % auto_zoom_right
+          zoom_click("right", "zoom_in"), sleep(300)
+
 
 ;mark camera as connected
 ;avoids error from chdkptp connecting an already connected camera
@@ -752,6 +811,7 @@ connect_cam(chdkptp, thiscam, xpos, ypos)
 
 ;function: get zoom range or current zoom position from a camera
 ; returns from chdkptp's get_zoom_range() or get_zoom() on the camera
+; returns blank on fail
 ; note: chdkptp file writes to a_ScriptDir
 get_zoom(which, command)
 {
@@ -804,40 +864,41 @@ in_out := InStr("|bf5b|NumpadSub|zoom_out_mini|", "|" A_ThisLabel "|") or (A_Thi
 ;zoom big (5%) or small (a minimal step) amount?
 
 ; 2018-08-26: Notes from test on cameras with 128 zoom step range
-; Zooming one step (+1) only works once in a row, must zoom out or zoom in more
-; for (+1) to work again.
+; Zooming one step (+1) only works once in a row, we must zoom out
+; or zoom in more for (+1) to work again.
 ; Zooming two steps (+2) always works.
 ; Therefore consider two steps minimal on 128 zoom step range cameras.
-; However according to http://chdk.wikia.com/wiki/Script_commands#get_zoom_steps
-; some cameras only have 9 zoom step range in which case two steps might be too large.
-; For now use two steps if zoom step range >100 and otherwise one step as the minimal amount.
+; 2018-09-24: CHDK cameras vary in zoom step range from 8 to 202.
+; For now use two steps if zoom step range >60 and otherwise one step.
+; >60 is a guesstimate after chdkptp forum discussion.
 
-minimal_left   := left_zoom_range  > 100 ? 2 : 1
-minimal_right  := right_zoom_range > 100 ? 2 : 1
+minimal_left   := left_zoom_range  > 60 ? 2 : 1
+minimal_right  := right_zoom_range > 60 ? 2 : 1
 
 left_zoom_size  := InStr("|*F5|*Numpad5|bf5|bf5b|", "|" A_ThisLabel "|") ? left_percentage_steps  : minimal_left
 right_zoom_size := InStr("|*F5|*Numpad5|bf5|bf5b|", "|" A_ThisLabel "|") ? right_percentage_steps : minimal_right
 
+;If user enables "Alt Zoom" in Setup then alt_zoom_method=1 and we use the zoom_click method.
+;Also use zoom_click method if left_zoom_range/right_zoom_range is false because get_zoom failed.
+
 sleep(200)
 if !right_only
-  if left_percentage_steps
+  if left_zoom_range and !alt_zoom_method
     zoom_steps("left", in_out, left_zoom_size)
   else
-    ;fallback to old method
     zoom_click("left", in_out = "+" ? "zoom_in" : "zoom_out")
 
 if !left_only
-  if right_percentage_steps
+  if right_zoom_range and !alt_zoom_method
     zoom_steps("right", in_out, right_zoom_size)
   else
-    ;fallback to old method
     zoom_click("right", in_out = "+" ? "zoom_in" : "zoom_out")
 actiscript()
 return
 
 
 ;function: click zoom
-;old indeterminate zoom method from version 2018-01-18 and older, use as fallback
+;used by alternative zoom method
 zoom_click(which, in_out){
   if acti(%which%cam)
     xsif("luar click('" in_out "')",%which%cam)
@@ -860,6 +921,9 @@ zoom_set(which, zoom_position){
 
 ;zoom menu: options to store current zoom as autozoom or restore zoom from previous projects
 bmenu:
+if alt_zoom_method
+  ;disable menu when user has chosen the alternative zoom mode
+  return
 menu, twocam_zoom_menu, add
 Menu, twocam_zoom_menu, Delete ;clear old
 
@@ -1008,7 +1072,7 @@ IniWrite, %previous_zooms% , %ini%, options, previous_zooms
 FileEncoding, UTF-8
 
 ;apply rsintoptions
-if !nopcsave
+if pcsave
 {
   if acti(leftcam)
     xsif("rsint " rsintoptions,leftcam), sleep(200)
@@ -1127,14 +1191,14 @@ counter := !counter ? 1 : counter
 count_string := SubStr("000000000000" . counter+enum, -3) ;pad 1 to 0001
 Gui, Color, silver
 sleep(wait)
-if !nopcsave  ;do *not* enclose path in rsint mode
+if pcsave  ;do *not* enclose path in rsint mode
 {
   if acti(leftcam)
     xs("path " workdirfrontslash "/" proj "/" count_string "R",leftcam),  xs("s", leftcam)
   if acti(rightcam)
     xs("path " workdirfrontslash "/" proj "/" count_string "L",rightcam), xs("s", rightcam)
 }
-if nopcsave
+if !pcsave
 {
   if acti(leftcam)
     xs("shoot " rsintoptions,leftcam)
