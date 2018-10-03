@@ -19,7 +19,7 @@ An option let users switch to the click('zoom_in') method.
 **Disadvantages with set_zoom**
 - May not zoom more exactly in all cameras.
 - May not work in all cameras.
-- Will in some cameras cause an error where the saved jpg have a fish lens like distortion i.e. straight lines are slightly curved.
+- Will in some cameras cause an error where the saved jpg have a fisheye lens like distortion i.e. straight lines are slightly curved.
 
 **Recommendation to users**  
 Stick to the default zoom, unless you notice the jpg distortion problem  with your specific camera. In that case use the non-default click('zoom_in') method.
