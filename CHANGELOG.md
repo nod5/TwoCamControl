@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [2018-10-03] - 2018-10-03
+### Added
+- Require ASCII characters in directory path edit field. Prevents path error in chdkptp rsint.
+- "Alt zoom" option: use click('zoom_in') for all zoom actions instead of the default set_zoom and set_zoom_relative.
+- docs/notes_on_zoom_methods.md
+
+### Changed
+- Default value for Wait is 0 (old: 400).
+- Minimal zoom step is +2 for cameras with >60 zoom range steps (old: >100).
+- "PC Save" option in Setup (old: "No PC Save" option)
+
 ## [2018-08-26] - 2018-08-26
 ### Added
 - Hotkey/button to toggle camera LCD display on/off (saves battery)
