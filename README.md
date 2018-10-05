@@ -42,11 +42,11 @@ Install AutoHotkey https://autohotkey.com and save the .ahk with UTF-8 BOM encod
 
 ## Optional Settings (Default Value)
 - **Auto zoom (0)** Auto zoom this number of steps when right/left camera connects.  
-- **Wait (400)** Wait this number of miliseconds before the camera shoots. Use this to add a delay in a hardware setup where shoots are triggered by a mousewheel that the platen touches on its way down. Set to 0 for no delay.  
+- **Wait (0)** Wait this number of miliseconds before the camera shoots. Use this to add a delay in a hardware setup where shoots are triggered by a mousewheel that the platen touches on its way down. Set to 0 for no delay.  
 - **Mousewheel (off)** Mouse wheel down triggers a shoot.  
 - **Numpad keys (off)** Activate numpad key controls (see below).  
 - **Space (off)** Space button triggers a shoot.  
-- **PC Save (on)** Save images directly to PC. Uncheck to save to camera SD cards (not to PC). Save to SD mode uses chdkptp "shoot" command with parameters set by user in the rsint options field. Try parameter raw=1 for raw shoot.  
+- **PC Save (on)** Save images directly to PC. Uncheck to save to camera SD cards (not to PC). Save to SD mode uses chdkptp `shoot` command with parameters set by user in the rsint options field. Try parameter raw=1 for raw shoot.  
 - **Alt Zoom (off)** Use click('zoom_in') method instead of the default set_zoom method. If this is checked then the numbers in the auto zoom settings are interpreted as the number of click zoom actions to auto perform on connect.
 - **rsint options (-cmdwait=600 -tv=1/160)** parameters for the `rsint` command. See file `USAGE.TXT` in chdkptp for more. `cmdwait` is the number of seconds until rsint times out.  
 - **extraprocess ()** Path to some external tool to run at project start. Example: `C:\folder\program.exe` . TwoCamControl sends the project name as a command line parameter. The project name is a timestamp (YYYYMMDDhhmmss).  
