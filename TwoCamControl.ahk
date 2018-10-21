@@ -12,7 +12,7 @@ TwoCamControl
 Windows frontend for chdkptp with two cameras.
 
 **********************
-version 2018-10-03
+version 2018-10-21
 by Nod5
 https://www.github.com/nod5/TwoCamControl
 Free Software GPLv3
