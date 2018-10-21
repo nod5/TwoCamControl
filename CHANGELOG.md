@@ -1,7 +1,11 @@
-# Change Log  
+﻿# Change Log  
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/).
+
+## [Unreleased]
+### Added
+- docs/notes_on_character_errors.md (old: GitHub issue #1)
 
 ## [2018-10-03] - 2018-10-03
 ### Added

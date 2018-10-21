@@ -111,7 +111,7 @@ Q  What if the chkdptp cmd window shows error about filepath or incorrect charac
 A  Try changing workdirectory path to not include special or non-english characters. Test with only a-z 0-9 space.  
 
 Q  What if chkdptp cmd window still shows error about filepath or incorrect characters?  
-A  See GitHub issue #1  
+A  See notes_on_character_errors.md at  https://github.com/nod5/TwoCamControl/blob/master/docs/notes_on_zoom_methods.md  
 
 Q  Can I use TwoCamControl with only one camera?  
 A  Yes.  
