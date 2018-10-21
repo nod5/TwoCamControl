@@ -74,5 +74,5 @@ chdkptp [lacks unicode support](https://chdk.setepontos.com/index.php?topic=1354
 
 Workaround: TwoCamControl only allows ASCII non-extended characters in the work directory path setup field. Photos then save as expected to datestamped subfolders in the work directory.  
 
-https://chdk.setepontos.com/index.php?topic=13540.msg138156#msg138156
-https://en.wikipedia.org/wiki/ASCII
+https://chdk.setepontos.com/index.php?topic=13540.msg138156#msg138156  
+https://en.wikipedia.org/wiki/ASCII  
