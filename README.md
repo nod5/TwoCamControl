@@ -104,7 +104,7 @@ DIY Book Scanner forum , https://forum.diybookscanner.org/viewtopic.php?f=20&t=3
 **A**  Try changing workdirectory path to not include special or non-english characters. Test with only a-z 0-9 space.  
 
 **Q**  What if chkdptp cmd window *still* shows error about filepath or incorrect characters?  
-**A**  See [notes_on_zoom_methods.md](https://github.com/nod5/TwoCamControl/blob/master/docs/notes_on_zoom_methods.md)
+**A**  See [notes_on_character_errors.md](https://github.com/nod5/TwoCamControl/blob/master/docs/notes_on_character_errors.md)  
 
 **Q**  Can I use TwoCamControl with only one camera?  
 **A**  Yes.  
