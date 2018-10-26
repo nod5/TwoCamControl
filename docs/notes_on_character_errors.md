@@ -12,7 +12,7 @@ If you notice a problem with character errors
 
 ## Technical notes
 
-TwoCamControl sends strings to cmd windows where chdkptp.exe in rsint mode sends commands USB connected Canon cameras with CHDK firmware to take photos and save to the PC.  
+TwoCamControl sends strings to cmd windows where chdkptp.exe in rsint mode sends commands to USB connected Canon cameras with CHDK firmware to take photos and save to the PC.  
 
 Character errors can happen at different steps in that chain.
 
@@ -22,9 +22,9 @@ Character errors can happen at different steps in that chain.
 - CHDK version  
 - camera model  
 - AutoHotkey version  
-- Encoding TwoCamControl.ahk is saved with.  
-- Encoding TwoCamControl sets before read/write/send operations.  
-- How TwoCamControl formats and sends strings.  
+- Encoding TwoCamControl.ahk is saved with  
+- Encoding TwoCamControl sets before read/write/send operations  
+- How TwoCamControl formats and sends strings  
 
 The following sections describe some different character errors and how to handle them.
 
