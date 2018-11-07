@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [2018-11-07] - 2018-11-07
+### Changed
+- After Shoot focus TwoCamControl window. Prevents accidental user input to cmd windows.
+
+### Fixed
+- Fix: Made F8 F9 hotkeys global. Overrides native cmd window F8 command history shortcut. (github issue #6)
+
 ## [2018-10-21] - 2018-10-21
 ### Added
 - docs/notes_on_character_errors.md (old: GitHub issue #1)

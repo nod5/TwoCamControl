@@ -12,7 +12,7 @@ TwoCamControl
 Windows frontend for chdkptp with two cameras.
 
 **********************
-version 2018-10-21
+version 2018-11-07
 by Nod5
 https://www.github.com/nod5/TwoCamControl
 Free Software GPLv3
@@ -111,7 +111,7 @@ Q  What if the chkdptp cmd window shows error about filepath or incorrect charac
 A  Try changing workdirectory path to not include special or non-english characters. Test with only a-z 0-9 space.  
 
 Q  What if chkdptp cmd window still shows error about filepath or incorrect characters?  
-A  See notes_on_character_errors.md at https://github.com/nod5/TwoCamControl/blob/master/docs/notes_on_character_errors.md  
+A  See notes_on_character_errors.md at  https://github.com/nod5/TwoCamControl/blob/master/docs/notes_on_character_errors.md  
 
 Q  Can I use TwoCamControl with only one camera?  
 A  Yes.  
@@ -201,9 +201,11 @@ workdir := SubStr(workdir,0) = "\" ? SubStr(workdir,1,StrLen(workdir)-1) : workd
 workdirfrontslash := StrReplace(workdir, "\","/") ;chdkptp uses frontslashes
 
 ;hotkey/buttons list, use to first disable all and then selectively enable
-all_hotkeys := "*F4,*F5,*F6,F7,F8,F9"
+;- local hotkeys when preparing session
+;- global hotkeys when shooting
+all_hotkeys := "*F4,*F5,*F6,F7"
 all_numpad_hotkeys := "*Numpad4,*Numpad5,*Numpad6,NumpadAdd,NumpadSub,Numpad7"
-all_global_hotkeys := "WheelDown,Space,Numpad8,Numpad9,NumpadEnter,Numpad3"
+all_global_hotkeys := "F8,F9,WheelDown,Space,Numpad8,Numpad9,NumpadEnter,Numpad3"
 all_buttons := "bf4,bf5,bf5b,bmenu,bf6,bf6b,bf6c,bf7,bf8,bf9"
 
 
@@ -1087,9 +1089,8 @@ hotoffglobal(all_global_hotkeys)
 dis(all_buttons)
 ;enable project hotkeys/buttons
 ena("bf8,bf9")
-hoton("F8,F9")
 if numpadkeys
-  hotonglobal("Numpad8,Numpad9,NumpadEnter,Numpad3")
+  hotonglobal("F8,F9,Numpad8,Numpad9,NumpadEnter,Numpad3")
 if mousewheelshoot
   hotonglobal("WheelDown")
 if spaceshoot
@@ -1144,10 +1145,9 @@ return
 
 
 ;PAUSE: disable shoot hotkeys, temp change GUI background color
-#IfWinActive, TwoCamControl ahk_class AutoHotkeyGUI
+#IfWinActive
 F9::
 bf9:
-#IfWinActive
 Numpad9::
 
 if wkey or akey
@@ -1160,7 +1160,8 @@ pau := !pau   ;pau var starts at 0
 col := pau = 1 ? "F6CECE" : "ffffff"  ;red or white
 Gui, Color, %col%
 toggle := pau ? "off" : "on"
-hot%toggle%("F8")
+;hot%toggle%("F8")
+hot%toggle%global("F8")
 if (mousewheelshoot = 1)
   hot%toggle%global("WheelDown")
 if (spaceshoot = 1)
@@ -1173,14 +1174,12 @@ return
 
 
 ;SHOOT
-#IfWinActive, TwoCamControl ahk_class AutoHotkeyGUI
+#IfWinActive
 F8::
 bf8:
-#IfWinActive
 Numpad8::
 WheelDown::
 Space::
-
 if wkey or akey
   return
 if (pau = 1) or !proj
@@ -1205,6 +1204,8 @@ if !pcsave
   if acti(rightcam)
     xs("shoot " rsintoptions,rightcam)
 }
+actiscript()
+
 pau := 0
 Gui, Color, D3E3D3 ;green
 counter++
@@ -1212,6 +1213,7 @@ count_string := SubStr("000000000000" . counter+enum, -3) ;pad 1 to 0001
 GuiControl,, fileenum, next filename %count_string%
 Gui, Submit, NoHide
 return
+
 
 #IfWinActive
 NumpadEnter:: ;save blank txt, for troubleshooting
