@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [2018-11-13] - 2018-11-13
 ### Fix
-- Fix: F8 F9 global hotkeys.
+- Fix: F8 F9 global hotkeys. (github issue #7)
 - Fix: skip get_zoom() in connect cameras step if "alt zoom" option is enabled.
 
 ## [2018-11-07] - 2018-11-07
