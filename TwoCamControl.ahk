@@ -1,4 +1,4 @@
-﻿#SingleInstance force
+#SingleInstance force
 SetTitleMatchMode, 2 ;string anywhere
 SetKeyDelay, -1
 SetBatchLines, -1
@@ -12,7 +12,7 @@ TwoCamControl
 Windows frontend for chdkptp with two cameras.
 
 **********************
-version 2018-11-07
+version 2018-11-13
 by Nod5
 https://www.github.com/nod5/TwoCamControl
 Free Software GPLv3
@@ -120,7 +120,7 @@ Q  What Windows version does TwoCamControl require?
 A  TwoCamControl is only tested in Windows 10 x64. It might work in earlier Windows.  
 
 Q  How does zoom work in TwoCamControl?  
-A  In default mode there are two zoom actions. You can zoom in/out a big amount (5 percent of the camera's zoom range) or a minimal amount (2 steps if the camera has a 60+ zoom range, otherwise 1 step). This is done using the chdkptp commands zoom_set and zoom_set_rel. The non-default "Alt Zoom" mode can be enabled in Setup. There TwoCamControl uses the chdkptp command click('zoom_in'). Use the non-default mode if the default causes distortion in the .jpg files where lines become curved similar to a fish lens effect. Only some cameras have that problem. Read notes_on_zoom_methods.md on GitHub for more.  
+A  In default mode there are two zoom actions. You can zoom in/out a big amount (5 percent of the camera's zoom range) or a minimal amount (2 steps if the camera has a 60+ zoom range, otherwise 1 step). This is done using the chdkptp commands zoom_set and zoom_set_rel. The non-default "Alt Zoom" mode can be enabled in Setup. There TwoCamControl uses the chdkptp command click('zoom_in'). Use the non-default mode if the default mode causes errors or causes distortion in the .jpg files where lines become curved similar to a fish lens effect. Only some cameras have that problem. Read notes_on_zoom_methods.md on GitHub for more.  
 
 Q  What if my question/issue/suggestion is not in this FAQ?  
 A  Open an issue at GitHub and describe the problem. Include these details: Your camera model, the version of CHDK, chdkptp and TwoCamControl and Windows version and language.  
@@ -743,11 +743,11 @@ sleep(500)
 
 ;get zoom step range for each camera, returns blank if fail
 if !right_only and !left_connected
-  if acti(leftcam)
+  if acti(leftcam) and !alt_zoom_method
     left_zoom_range   := get_zoom("left", "return get_zoom_steps()") , sleep(500)
 
 if !left_only and !right_connected
-  if acti(rightcam)
+  if acti(rightcam) and !alt_zoom_method
     right_zoom_range  := get_zoom("right", "return get_zoom_steps()")
 
 ;calculate 5% zoom in steps for each camera, at minimum 1 step
@@ -926,6 +926,7 @@ bmenu:
 if alt_zoom_method
   ;disable menu when user has chosen the alternative zoom mode
   return
+
 menu, twocam_zoom_menu, add
 Menu, twocam_zoom_menu, Delete ;clear old
 
@@ -1089,8 +1090,9 @@ hotoffglobal(all_global_hotkeys)
 dis(all_buttons)
 ;enable project hotkeys/buttons
 ena("bf8,bf9")
+hotonglobal("F8,F9")
 if numpadkeys
-  hotonglobal("F8,F9,Numpad8,Numpad9,NumpadEnter,Numpad3")
+  hotonglobal("Numpad8,Numpad9,NumpadEnter,Numpad3")
 if mousewheelshoot
   hotonglobal("WheelDown")
 if spaceshoot
