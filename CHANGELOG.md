@@ -1,7 +1,12 @@
-﻿# Change Log  
+# Change Log  
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
+
+## [2018-11-13] - 2018-11-13
+### Fix
+- Fix: F8 F9 global hotkeys.
+- Fix: skip get_zoom() in connect cameras step if "alt zoom" option is enabled.
 
 ## [2018-11-07] - 2018-11-07
 ### Changed
