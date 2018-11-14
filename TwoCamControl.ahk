@@ -367,8 +367,8 @@ spaceshoot:
 pcsave:
 extraprocess:
 gui,submit,nohide
-tempkey := a_thislabel      ;wait
-tempedit := %a_thislabel%   ;400
+tempkey  := a_thislabel     ;wait  ;label text
+tempedit := %a_thislabel%   ;400   ;value of variable with same name as label
 
 FileEncoding, UTF-16
 IniWrite, %tempedit%, %ini%, options, %tempkey%
