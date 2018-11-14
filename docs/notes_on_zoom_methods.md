@@ -28,7 +28,7 @@ Stick to the default zoom, unless you notice the jpg distortion problem  with yo
 If you do notice the jpg distortion problem with your camera then you can help out by posting about it in a new TwoCamControl [github issue](https://github.com/nod5/TwoCamControl/issues) and/or in [this CHDK forum thread](https://chdk.setepontos.com/index.php?topic=13540.msg). Describe the camera model and CHDK/chdkptp versions you use. The CHDK developers might then be able to to fix the problem for that camera.
 
 **Further reading**
-- [CHDK forum thread](https://chdk.setepontos.com/index.php?topic=13540.msg) about zoom_set and the distortion problem, with links to additional threads.
+- [CHDK forum thread](https://chdk.setepontos.com/index.php?topic=13540.msg) about set_zoom and the distortion problem, with links to additional threads.
 - comments in TwoCamControl source code
 - TwoCamControl GitHub [issue #3](https://github.com/nod5/TwoCamControl/issues/3)
 - CHDK site man page for commands [set_zoom](http://chdk.wikia.com/wiki/CHDK_scripting#set_zoom_.2F_set_zoom_rel_.2F_get_zoom_.2F_set_zoom_speed) and [click('zoom_in')](http://chdk.wikia.com/wiki/CHDK_scripting#Camera_Button_Commands)
