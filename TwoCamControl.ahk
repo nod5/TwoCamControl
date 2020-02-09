@@ -1,4 +1,4 @@
-#SingleInstance force
+﻿#SingleInstance force
 SetTitleMatchMode, 2 ;string anywhere
 SetKeyDelay, -1
 SetBatchLines, -1
